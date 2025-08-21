@@ -73,7 +73,7 @@ TestiOSApp/
 ## 技术特点
 
 - 使用最新的 iOS 开发技术栈
-- 支持 iOS 17.0+
-- UIKit + Storyboard 界面
+- 支持 iOS 14.0+（兼容iOS 16及以上版本）
+- UIKit + 纯代码界面
 - 自动布局约束
 - GitHub Actions 云端构建
