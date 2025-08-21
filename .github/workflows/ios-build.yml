@@ -44,31 +44,26 @@ jobs:
 
     - name: Export IPA
       run: |
-        mkdir -p build
-        cat > build/export_options.plist << EOF
-        <?xml version="1.0" encoding="UTF-8"?>
-        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-        <plist version="1.0">
-        <dict>
-          <key>method</key>
-          <string>ad-hoc</string>
-          <key>signingStyle</key>
-          <string>automatic</string>
-          <key>stripSwiftSymbols</key>
-          <true/>
-          <key>teamID</key>
-          <string></string>
-        </dict>
-        </plist>
-        EOF
-        
-        # Create a proper IPA structure manually
-        echo "Creating IPA manually..."
+        # Create a proper IPA structure for TrollStore
+        echo "Creating IPA for TrollStore..."
         mkdir -p build/Payload
-        cp -r build/TestiOSApp.xcarchive/Products/Applications/TestiOSApp.app build/Payload/
-        cd build
-        zip -r TestiOSApp_manual.ipa Payload/
-        cd ..
+        
+        # Copy the app bundle to Payload directory
+        if [ -d "build/TestiOSApp.xcarchive/Products/Applications/TestiOSApp.app" ]; then
+          cp -r build/TestiOSApp.xcarchive/Products/Applications/TestiOSApp.app build/Payload/
+          
+          # Create IPA file
+          cd build
+          zip -r TestiOSApp_TrollStore.ipa Payload/
+          cd ..
+          
+          # Verify IPA structure
+          echo "IPA contents:"
+          unzip -l build/TestiOSApp_TrollStore.ipa | head -20
+        else
+          echo "Error: TestiOSApp.app not found in archive"
+          ls -la build/TestiOSApp.xcarchive/Products/Applications/ || echo "Applications directory not found"
+        fi
 
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
@@ -76,7 +71,6 @@ jobs:
         name: TestiOSApp-IPA
         path: |
           build/*.ipa
-          build/*_unsigned.ipa
         retention-days: 30
 
     - name: List build outputs
