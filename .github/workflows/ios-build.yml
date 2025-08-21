@@ -69,7 +69,7 @@ jobs:
         if [ ! -f "build/TestiOSApp.ipa" ]; then
           echo "Creating unsigned IPA from xcarchive..."
           cd build/TestiOSApp.xcarchive/Products/Applications
-          zip -r ../../../TestiOSApp_unsigned.ipa TestiOSApp.app
+          zip -r ../../../TestiOSApp_unsigned.ipa .
           cd ../../..
         fi
 
