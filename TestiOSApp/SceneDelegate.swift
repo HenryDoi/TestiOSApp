@@ -5,11 +5,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        print("SceneDelegate: scene willConnectTo called")
+        guard let windowScene = (scene as? UIWindowScene) else { 
+            print("SceneDelegate: Failed to get windowScene")
+            return 
+        }
         
+        print("SceneDelegate: Creating window and view controller")
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = ViewController()
+        let viewController = ViewController()
+        window?.rootViewController = viewController
         window?.makeKeyAndVisible()
+        print("SceneDelegate: Window setup completed")
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
