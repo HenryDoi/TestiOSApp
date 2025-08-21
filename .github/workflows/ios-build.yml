@@ -25,17 +25,14 @@ jobs:
 
     - name: Clean build folder
       run: |
-        cd TestiOSApp
         xcodebuild clean -project TestiOSApp.xcodeproj -scheme TestiOSApp
 
     - name: Build iOS App
       run: |
-        cd TestiOSApp
         xcodebuild build -project TestiOSApp.xcodeproj -scheme TestiOSApp -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest'
 
     - name: Archive iOS App
       run: |
-        cd TestiOSApp
         xcodebuild archive \
           -project TestiOSApp.xcodeproj \
           -scheme TestiOSApp \
@@ -47,7 +44,6 @@ jobs:
 
     - name: Export IPA
       run: |
-        cd TestiOSApp
         mkdir -p build
         cat > build/export_options.plist << EOF
         <?xml version="1.0" encoding="UTF-8"?>
@@ -82,11 +78,11 @@ jobs:
       with:
         name: TestiOSApp-IPA
         path: |
-          TestiOSApp/build/*.ipa
-          TestiOSApp/build/*_unsigned.ipa
+          build/*.ipa
+          build/*_unsigned.ipa
         retention-days: 30
 
     - name: List build outputs
       run: |
         echo "Build artifacts:"
-        find TestiOSApp/build -name "*.ipa" -o -name "*.xcarchive" | head -10
+        find build -name "*.ipa" -o -name "*.xcarchive" | head -10
