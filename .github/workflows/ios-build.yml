@@ -51,27 +51,24 @@ jobs:
         <plist version="1.0">
         <dict>
           <key>method</key>
-          <string>development</string>
+          <string>ad-hoc</string>
           <key>signingStyle</key>
-          <string>manual</string>
+          <string>automatic</string>
           <key>stripSwiftSymbols</key>
           <true/>
+          <key>teamID</key>
+          <string></string>
         </dict>
         </plist>
         EOF
         
-        xcodebuild -exportArchive \
-          -archivePath build/TestiOSApp.xcarchive \
-          -exportPath build \
-          -exportOptionsPlist build/export_options.plist || true
-        
-        # Alternative method if export fails
-        if [ ! -f "build/TestiOSApp.ipa" ]; then
-          echo "Creating unsigned IPA from xcarchive..."
-          cd build/TestiOSApp.xcarchive/Products/Applications
-          zip -r ../../../TestiOSApp_unsigned.ipa .
-          cd ../../..
-        fi
+        # Create a proper IPA structure manually
+        echo "Creating IPA manually..."
+        mkdir -p build/Payload
+        cp -r build/TestiOSApp.xcarchive/Products/Applications/TestiOSApp.app build/Payload/
+        cd build
+        zip -r TestiOSApp_manual.ipa Payload/
+        cd ..
 
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
