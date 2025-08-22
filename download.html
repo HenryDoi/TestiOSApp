@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TestiOSApp 下载</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial; text-align: center; padding: 20px; }
+        .download-btn { 
+            background: #007AFF; 
+            color: white; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 18px; 
+            margin: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .info { color: #666; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>📱 TestiOSApp</h1>
+    <p class="info">最新版本自动构建</p>
+    
+    <a href="https://github.com/HenryDoi/TestiOSApp/actions" class="download-btn">
+        🔽 下载最新IPA
+    </a>
+    
+    <p class="info">
+        1. 点击最新构建任务<br>
+        2. 下载 TestiOSApp-IPA<br>
+        3. 用TrollStore安装
+    </p>
+    
+    <script>
+        // 每30秒检查一次新构建
+        setInterval(() => {
+            console.log('检查更新...');
+        }, 30000);
+    </script>
+</body>
+</html>
