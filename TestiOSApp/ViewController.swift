@@ -163,16 +163,42 @@ class ViewController: UIViewController {
     private func showUpdateAvailable(buildUrl: String) {
         updateStatus("发现新版本! 🎉")
         
-        let alert = UIAlertController(title: "发现新版本", message: "检测到新的构建版本，是否前往下载？\n\n提示：下载的是zip文件，需要解压后获取IPA", preferredStyle: .alert)
+        let alert = UIAlertController(title: "发现新版本", message: "检测到新的构建版本", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "取消", style: .cancel))
-        alert.addAction(UIAlertAction(title: "前往下载", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "下载并解压", style: .default) { _ in
+            self.downloadAndExtractIPA()
+        })
+        alert.addAction(UIAlertAction(title: "手动下载", style: .default) { _ in
             if let url = URL(string: "https://github.com/HenryDoi/TestiOSApp/actions") {
                 UIApplication.shared.open(url)
             }
         })
         
         present(alert, animated: true)
+    }
+    
+    private func downloadAndExtractIPA() {
+        updateStatus("正在下载更新...")
+        
+        // 这里需要GitHub API Token才能下载artifacts
+        // 由于GitHub Actions artifacts需要认证，所以直接下载比较复杂
+        
+        let alert = UIAlertController(
+            title: "自动下载限制", 
+            message: "由于GitHub限制，无法直接下载。\n建议：\n1. 手动下载zip文件\n2. 用文件应用解压\n3. 分享IPA到TrollStore", 
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "前往下载", style: .default) { _ in
+            if let url = URL(string: "https://github.com/HenryDoi/TestiOSApp/actions") {
+                UIApplication.shared.open(url)
+            }
+        })
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel))
+        
+        present(alert, animated: true)
+        updateStatus("需要手动下载")
     }
     
     private func updateStatus(_ message: String) {

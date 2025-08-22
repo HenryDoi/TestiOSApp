@@ -77,3 +77,21 @@ jobs:
       run: |
         echo "Build artifacts:"
         find build -name "*.ipa" -o -name "*.xcarchive" | head -10
+
+    - name: Create Release
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ github.run_number }}
+        name: "Build #${{ github.run_number }}"
+        files: |
+          build/TestiOSApp_TrollStore.ipa
+        body: |
+          🚀 自动构建 #${{ github.run_number }}
+          
+          📱 直接下载IPA安装到TrollStore
+          
+          构建时间: ${{ github.event.head_commit.timestamp }}
+          提交: ${{ github.sha }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
